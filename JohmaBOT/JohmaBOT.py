@@ -1,16 +1,21 @@
 import os
 import json
-from bardapi import Bard
+from tracemalloc import start
 import discord
 from discord.ext import commands
-from discord import app_commands
 import asyncio
+
+INITIAL_EXTENSIONS = [
+    'cogs.talk_and_question',
+    'cogs.get_image',
+    ]
+
 try:
     intents = discord.Intents.all()
     bot = commands.Bot(command_prefix='??',intents=intents)
 except Exception as  e:
     print(e)
-
+ 
 if os.path.exists('token.json') :
     pass
 else :
@@ -22,10 +27,6 @@ else :
      print('token.json created plz edit it file. file location is RootDirectory/token.json\r\n')
      exit()
 
-with open('token.json', 'r') as f:
- ps_data = json.load(f)
- psid_token = ps_data[1]['1PSID']
-
 @bot.event
 async def on_ready():
     print(f'complete logging in! {bot.user}')
@@ -33,18 +34,6 @@ async def on_ready():
          await bot.tree.sync()
     except Exception as e:
         print(e)
-
-@bot.tree.command(name="talk_and_question", description="AIと話をしよう！")
-async def talk_and_question(interaction: discord.Interaction, text:str):
- try:
-  
-  await interaction.response.defer()
-  bard = Bard(token=psid_token)
-  answer = bard.get_answer(text)
-  await interaction.followup.send(answer['content'])
- except Exception as e:
-  await interaction.response.send_message("エラーが発生しました。")
-  await interaction.response.send_message.send(e)
 
 @bot.event
 async def on_message(message):
@@ -58,7 +47,18 @@ with open('token.json', 'r') as f:
      data = json.load(f)
 bot_token = data[0]['token']
 try:
-   bot.run(bot_token)
+ async def load_extension():
+  for cog in INITIAL_EXTENSIONS:
+   await bot.load_extension(cog)
+except Exception as  e:
+    print(e)
+
+async def main():
+ async with bot:
+  await load_extension()
+  await bot.start(bot_token)
+try:
+   asyncio.run(main())
 except Exception as e:
     print(e)
     exit()

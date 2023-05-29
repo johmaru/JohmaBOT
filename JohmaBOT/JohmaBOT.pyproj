@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2300140e-6e85-449a-85b7-ea5b9b0f77a4</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Core\JohmaBOT.py</StartupFile>
+    <StartupFile>JohmaBOT.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,7 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Core\JohmaBOT.py" />
+    <Compile Include="cogs\get_image.py" />
+    <Compile Include="cogs\talk_and_question.py" />
+    <Compile Include="JohmaBOT.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
@@ -36,7 +38,7 @@
     </Interpreter>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\" />
+    <Folder Include="cogs\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
